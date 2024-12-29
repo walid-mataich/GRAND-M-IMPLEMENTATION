@@ -23,23 +23,19 @@ def ajouter_variable(A_grand_m, c_grand_m, col, cout):
 
 #UTILISE LA FNCT ajouter_variable() POUR MODIFIER LE TABLEAU SELON LE CONTRAINTE
 def traiter_contrainte(A_grand_m, c_grand_m, s_vars, a_vars, num_c, i, cont_type, M):
+    col = np.zeros((num_c,))
     if cont_type == '<=':
-        col = np.zeros((num_c,))
         col[i] = 1
         s_vars.append(len(c_grand_m))
         return ajouter_variable(A_grand_m, c_grand_m, col, 0)
-    elif cont_type == '>=':
-        e_col, a_col = np.zeros((num_c,)), np.zeros((num_c,))
-        e_col[i], a_col[i] = -1, 1
-        A_grand_m, c_grand_m = ajouter_variable(A_grand_m, c_grand_m, e_col, 0)
+    elif cont_type in ('>=', '='):
+        col[i] = -1 if cont_type == '>=' else 1
+        if cont_type == '>=':
+            A_grand_m, c_grand_m = ajouter_variable(A_grand_m, c_grand_m, col, 0)
+            col = np.zeros((num_c,))
+        col[i] = 1
         a_vars.append(len(c_grand_m))
-        return ajouter_variable(A_grand_m, c_grand_m, a_col, M)
-    elif cont_type == '=':
-        a_col = np.zeros((num_c,))
-        a_col[i] = 1
-        a_vars.append(len(c_grand_m))
-        return ajouter_variable(A_grand_m, c_grand_m, a_col, M)
-    return A_grand_m, c_grand_m
+        return ajouter_variable(A_grand_m, c_grand_m, col, M)
 
 
 #IMPLEMENTE LA METHODE DE GRAND M 
