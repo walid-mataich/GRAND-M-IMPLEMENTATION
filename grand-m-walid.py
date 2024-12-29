@@ -56,13 +56,13 @@ def GrandM(c, A, b, cont_signes, M=10000):
     afficher_premier_tableau(c_grand_m, A_grand_m, b)
     optim = linprog(c_grand_m, A_eq=A_grand_m, b_eq=b, method='simplex')
     print(optim)  # AFFICHER LE RESULTAT DE LINPROG
-    final_solution = optim.x[:num_v]
-    return final_solution, optim.fun
+    sol = optim.x[:num_v]
+    return sol, optim.fun
 
 
 if __name__ == "__main__":
 
-    solution, optimal_value = GrandM(
+    sol_op, z_optimale = GrandM(
         [-2,-3],
         np.array([[1, 2], [1, 2]]),
         np.array([8, 6]),
@@ -70,12 +70,13 @@ if __name__ == "__main__":
     )
 
     print("Solution optimale:")
-    for i, val in enumerate(solution):
+    for i, val in enumerate(sol_op):
         print(f"x{i+1} = {val}")
-    print("Valeur optimale de z:", -optimal_value)  #EN MULTIPLIE PAR -1 POUR LA MAXIMISATION
+    print("Valeur optimale de z:", -z_optimale)  #EN MULTIPLIE PAR -1 POUR LA MAXIMISATION
+
 
     #test2
-    # solution, optimal_value = GrandM(
+    # sol, z_optimale = GrandM(
     #     [2, 4],
     #     np.array([[2, -2], [4, 2]]),
     #     np.array([4, 6]),
@@ -83,7 +84,19 @@ if __name__ == "__main__":
     # )
 
     # print("Solution optimale:")
+    # for i, val in enumerate(sol):
+    #     print(f"x{i+1} = {val}")
+    # print("Valeur optimale de z:", -z_optimale)  #EN MULTIPLIE PAR -1 POUR LA MAXIMISATION
+
+    # test minimsation
+    # solution, z_optimale = GrandM(
+    #     [4, 3],
+    #     np.array([[2, 1], [-3, 2], [1, 1]]),
+    #     np.array([10, 6, 6]),
+    #     ['>=','<=','>=' ]
+    # )
+
+    # print("Solution optimale:")
     # for i, val in enumerate(solution):
     #     print(f"x{i+1} = {val}")
-    # print("Valeur optimale de z:", -optimal_value)  #EN MULTIPLIE PAR -1 POUR LA MAXIMISATION
-
+    # print("Valeur optimale de z:", z_optimale)
